@@ -2,7 +2,7 @@ import json
 import decimalencoder
 import todoList
 
-
+#nuevo cambio aplicado
 def get(event, context):
     # create a response
     item = todoList.get_item(event['pathParameters']['id'])
