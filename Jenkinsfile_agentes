@@ -12,6 +12,8 @@ pipeline {
                 cleanWs()
                 // Obtener el código del repo
                 git branch: 'develop', url: 'https://github.com/xHavckedx/todo-list-aws'
+		stash includes: 'src/**/*', name: 'code'
+		stash includes: 'test/**/*', name: 'test'
             }
         }
         stage('Static Test') {
@@ -19,7 +21,9 @@ pipeline {
 		label 'slave1'
             }
             steps {
+		unstash 'code'
                 sh '''
+		    whoami
 		    hostname -i
                     python -m flake8 --exit-zero --format=pylint src >flake8.out
                     python -m bandit --exit-zero -r ./src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
@@ -53,7 +57,9 @@ pipeline {
             }
             steps {
                 script {
+		    unstash 'test'
                     sh '''
+			whoami
  			hostname -i
                         export BASE_URL=${BASE_URL}
                         python -m pytest --junitxml=result-unit.xml test/integration/todoApiTest.py
