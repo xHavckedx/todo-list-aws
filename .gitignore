@@ -1,4 +1,6 @@
 .aws-sam/
+.gitignore
+ssh-key.pem
 __pycache__/
 .git
 tests
