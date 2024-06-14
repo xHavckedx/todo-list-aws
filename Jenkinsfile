@@ -48,6 +48,8 @@ pipeline {
         stage('Promote'){
             steps{
 	      sh '''
+		echo "Release: ${env.BUILD_NUMBER}" >> README.md"
+		git pull --rebase
 		git commit -am "BREAKING CHANGE: New release"
 		git push https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git
 		'''
