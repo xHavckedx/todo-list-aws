@@ -18,8 +18,8 @@ pipeline {
         stage('Static Test') {
             steps {
                 sh '''
-                    flake8 --exit-zero --format=pylint src >flake8.out
-                    bandit --exit-zero -r ./src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
+                    python -m flake8 --exit-zero --format=pylint src >flake8.out
+                    python -m bandit --exit-zero -r ./src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
                 '''
                 recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')]
                 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')]
@@ -39,7 +39,7 @@ pipeline {
         stage('Rest Test') {
             steps {
                 sh '''
-                    pytest --junitxml=result-unit.xml test/integration/todoApiTest.py
+                    python -m pytest --junitxml=result-unit.xml test/integration/todoApiTest.py
                 '''
             }
         }
