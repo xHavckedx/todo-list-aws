@@ -27,7 +27,7 @@ pipeline {
                         env.BASE_URL = BASE_URL
                     } catch (Exception e) {
                         echo "Error in Deploy stage: ${e.getMessage()}"
-                        def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
+                        def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-production --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
                         echo "Base URL: ${BASE_URL}"
                         env.BASE_URL = BASE_URL
                     }
