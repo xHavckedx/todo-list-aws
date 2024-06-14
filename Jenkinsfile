@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        sam deploy --config-file samconfig.toml --config-env staging
+                        sam deploy --config-file samconfig.toml --config-env staging --no-confirm-changeset
                     '''
                     def base_url = sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
                     env.BASE_URL = base_url
