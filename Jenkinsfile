@@ -14,8 +14,6 @@ pipeline {
                 git branch: 'develop', url: 'https://github.com/xHavckedx/todo-list-aws'
             }
         }
-    }
-    stages{
         stage('Static Test'){
             steps{
               sh '''
@@ -26,7 +24,6 @@ pipeline {
                 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')]
             }
         }
-    stages{
         stage('Deploy'){
             steps{
 	      sh '''
@@ -36,7 +33,6 @@ pipeline {
 		env.BASE_URL = base_url
             }
         }
-    stages{
         stage('Rest Test'){
             steps{
 	      sh '''
@@ -44,7 +40,6 @@ pipeline {
 		'''
             }
         }
-    stages{
         stage('Promote'){
             steps{
 	      sh '''
@@ -63,4 +58,5 @@ pipeline {
             cleanWs()
         }
     }
+  }
 }
