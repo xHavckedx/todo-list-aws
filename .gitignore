@@ -1,8 +1,8 @@
 .aws-sam/
 bandit.out
 flake8.out
-iadJenkinsfile
-a.gitignore
+Jenkinsfile
+.gitignore
 ssh-key.pem
 __pycache__/
 .git
