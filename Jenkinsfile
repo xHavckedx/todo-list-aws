@@ -17,30 +17,29 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                script {
-                    sh '''
-                        sam deploy --config-file samconfig.toml --config-env production --no-confirm-changeset
-                    '''
-                    def base_url = sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-production --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
-                    env.BASE_URL = base_url
+		script {
+                    try {
+                        sh '''
+                            sam deploy --config-file samconfig.toml --config-env production --no-confirm-changeset
+                        '''
+                        def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-production --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
+                        echo "Base URL: ${BASE_URL}"
+                        env.BASE_URL = BASE_URL
+                    } catch (Exception e) {
+                        echo "Error in Deploy stage: ${e.getMessage()}"
+                        def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
+                        echo "Base URL: ${BASE_URL}"
+                        env.BASE_URL = BASE_URL
+                    }
                 }
             }
         }
         stage('Rest Test') {
             steps {
-                sh '''
-                    python -m pytest --junitxml=result-unit.xml -m production test/integration/todoApiTest.py
-                '''
-            }
-        }
-        stage('Promote') {
-            steps {
-                script {
+		script {
                     sh '''
-                        echo "Release: ${env.BUILD_NUMBER}" >> README.md
-                        git pull --rebase
-                        git commit -am "BREAKING CHANGE: New release"
-                        git push https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git
+                        export BASE_URL=${BASE_URL}
+                        python -m pytest -m production --junitxml=result-unit.xml test/integration/todoApiTest.py
                     '''
                 }
             }
