@@ -12,26 +12,16 @@ pipeline {
                 // Limpiar el workspace
                 cleanWs()
                 // Obtener el código del repo
-                git branch: 'develop', url: 'https://github.com/xHavckedx/todo-list-aws'
-            }
-        }
-        stage('Static Test') {
-            steps {
-                sh '''
-                    python -m flake8 --exit-zero --format=pylint src >flake8.out
-                    python -m bandit --exit-zero -r ./src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
-                '''
-                recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')]
-                recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')]
+                git branch: 'master', url: 'https://github.com/xHavckedx/todo-list-aws'
             }
         }
         stage('Deploy') {
             steps {
                 script {
                     sh '''
-                        sam deploy --config-file samconfig.toml --config-env staging --no-confirm-changeset
+                        sam deploy --config-file samconfig.toml --config-env production --no-confirm-changeset
                     '''
-                    def base_url = sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
+                    def base_url = sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-production --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
                     env.BASE_URL = base_url
                 }
             }
@@ -39,7 +29,7 @@ pipeline {
         stage('Rest Test') {
             steps {
                 sh '''
-                    python -m pytest --junitxml=result-unit.xml test/integration/todoApiTest.py
+                    python -m pytest --junitxml=result-unit.xml -m production test/integration/todoApiTest.py
                 '''
             }
         }
