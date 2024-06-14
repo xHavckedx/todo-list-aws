@@ -1,0 +1,12 @@
+.aws-sam/
+bandit.out
+flake8.out
+iadJenkinsfile
+a.gitignore
+ssh-key.pem
+__pycache__/
+.git
+tests
+pyenvunittests
+.coverage
+coverage.xml
