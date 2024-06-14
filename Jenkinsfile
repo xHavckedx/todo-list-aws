@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        BASE_URL = "Null"
         TOKEN = credentials('token-francesc-github')
     }
 
