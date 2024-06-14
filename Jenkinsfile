@@ -60,7 +60,7 @@ pipeline {
                         #!/bin/bash
                         git checkout master
                         echo "Release: 1" >> README.md
-                        git add README.md
+                        git add .
                         git commit -m "BREAKING CHANGE: New release"
                         git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
                     '''

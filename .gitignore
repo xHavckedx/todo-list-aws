@@ -1,4 +1,6 @@
 .aws-sam/
+bandit.out
+flake8.out
 Jenkinsfile
 .gitignore
 ssh-key.pem
