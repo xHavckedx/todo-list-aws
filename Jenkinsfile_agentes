@@ -87,12 +87,12 @@ pipeline {
 			git merge develop			
 			git checkout --ours .gitignore
 			git checkout --ours Jenkinsfile
-			git checkout --ours Jenkinsfile_agentes
+                        git checkout --ours Jenkinsfile_agentes
 			git checkout --ours README.md
 			git add .gitignore Jenkinsfile Jenkinsfile_agentes README.md
 			git commit -m "BREAKING CHANGE: New release"
 
-                        git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git" -f
+                        git push -f "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
                     '''
                 }
             }
