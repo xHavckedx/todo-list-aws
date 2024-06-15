@@ -78,13 +78,15 @@ pipeline {
                 script {
                     sh '''
                         #!/bin/bash
+			git config user.name "JENKINS"
+			git config user.email "leocanogomez00@outlook.com"
                         git checkout master
                         echo "Release: 1" >> README.md
                         git add .
                         git commit -m "BREAKING CHANGE: New release"
 			git merge develop			
                         git checkout --ours Jenkinsfile_agentes
-			git add Jenkinsfile_agentes
+			git add Jenkinsfile_agentes 
 			git commit -m "BREAKING CHANGE: New release"
 
                         git push -f "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
