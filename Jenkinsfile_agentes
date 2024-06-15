@@ -12,15 +12,19 @@ pipeline {
                 cleanWs()
                 // Obtener el código del repo
                 git branch: 'master', url: 'https://github.com/xHavckedx/todo-list-aws'
+		sh "wget -O samconfig.toml https://raw.githubusercontent.com/xHavckedx/todo-list-aws-config/production/samconfig.toml"
 		stash includes: 'test/**/*', name: 'test'
+		stash includes: 'samconfig.toml', name: 'config'
             }
         }
         stage('Deploy') {
             steps {
 		script {
                     try {
+			unstash 'config'
                         sh '''
                             sam deploy --config-file samconfig.toml --config-env production --no-confirm-changeset
+			    rm samconfig.toml
                         '''
                         def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws-production --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
                         echo "Base URL: ${BASE_URL}"
