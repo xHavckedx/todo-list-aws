@@ -41,6 +41,7 @@ pipeline {
 			unstash 'config'
                         sh '''
                             sam deploy --config-file samconfig.toml --config-env staging --no-confirm-changeset
+			    rm samconfig.toml
                         '''
                         def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
                         echo "Base URL: ${BASE_URL}"
