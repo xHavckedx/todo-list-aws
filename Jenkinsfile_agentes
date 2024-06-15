@@ -78,6 +78,7 @@ pipeline {
                 script {
                     sh '''
                         #!/bin/bash
+			whoami; hostname -i
 			git config user.name "JENKINS"
 			git config user.email "leocanogomez00@outlook.com"
                         git checkout master
