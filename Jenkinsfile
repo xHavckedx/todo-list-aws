@@ -63,6 +63,7 @@ pipeline {
                         git add .
                         git commit -m "BREAKING CHANGE: New release"
                         git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
+			git merge develop -X ours
                     '''
                 }
             }
