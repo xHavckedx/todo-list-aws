@@ -82,7 +82,17 @@ pipeline {
                         git add .
                         git commit -m "BREAKING CHANGE: New release"
                         git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
-			git merge develop
+
+			git merge develop			
+			git checkout --ours samconfig.toml
+			git checkout --ours .gitignore
+			git checkout --ours Jenkinsfile
+			git checkout --ours Jenkinsfile_agentes
+			git checkout --ours README.md
+			git add samconfig.toml .gitignore Jenkinsfile Jenkinsfile_agentes README.md
+			git commit
+
+                        git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
                     '''
                 }
             }
