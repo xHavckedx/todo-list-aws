@@ -2,9 +2,6 @@ import json
 import decimalencoder
 import todoList
 
-
-# PROBANDO SCM OTRA VEZ
-
 def get(event, context):
     # create a response
     item = todoList.get_item(event['pathParameters']['id'])
