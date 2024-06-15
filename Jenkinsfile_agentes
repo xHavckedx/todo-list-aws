@@ -85,11 +85,11 @@ pipeline {
                         #echo "Release: 1" >> README.md
                         #git add .
                         #git commit -m "BREAKING CHANGE: New release"
-			git merge develop			
-			git checkout --ours Jenkinsfile_agentes
-                        git add Jenkinsfile_agentes 
-                        git commit -m "BREAKING CHANGE: New release"
-			git status
+			git merge develop -X ours			
+			#git checkout --ours Jenkinsfile_agentes
+                        #git add Jenkinsfile_agentes 
+                        #git commit -m "BREAKING CHANGE: New release"
+			#git status
                         git push -f "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
                     '''
                 }
