@@ -89,7 +89,7 @@ pipeline {
 			git checkout --ours Jenkinsfile
 			git checkout --ours Jenkinsfile_agentes
 			git checkout --ours README.md
-			git add samconfig.toml .gitignore Jenkinsfile Jenkinsfile_agentes README.md
+			git add .gitignore Jenkinsfile Jenkinsfile_agentes README.md
 			git commit -m "BREAKING CHANGE: New release"
 
                         git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
