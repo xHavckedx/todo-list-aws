@@ -16,9 +16,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-	    agent {
-		label 'slave1'
-            }
             steps {
 		script {
                     try {
@@ -43,6 +40,7 @@ pipeline {
             }
             steps {
 		script {
+		    unstash 'test'
                     sh '''
                         export BASE_URL=${BASE_URL}
                         python -m pytest -m production --junitxml=result-unit.xml test/integration/todoApiTest.py
