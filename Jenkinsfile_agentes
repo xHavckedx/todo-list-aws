@@ -82,8 +82,6 @@ pipeline {
                         echo "Release: 1" >> README.md
                         git add .
                         git commit -m "BREAKING CHANGE: New release"
-                        git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
-
 			git merge develop			
 			git checkout --ours .gitignore
 			git checkout --ours Jenkinsfile
