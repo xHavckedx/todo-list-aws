@@ -51,6 +51,7 @@ pipeline {
                         def BASE_URL= sh(script: 'aws cloudformation describe-stacks --stack-name todo-list-aws --query "Stacks[0].Outputs[?OutputKey==\'BaseUrlApi\'].OutputValue" --output text', returnStdout: true).trim()
                         echo "Base URL: ${BASE_URL}"
                         env.BASE_URL = BASE_URL
+			sh "samconfig.toml"
                     }
                 }
             }
@@ -78,14 +79,12 @@ pipeline {
                     sh '''
                         #!/bin/bash
                         git checkout master
-			git rm samconfig.toml
                         echo "Release: 1" >> README.md
                         git add .
                         git commit -m "BREAKING CHANGE: New release"
                         git push "https://JENKINS:${TOKEN}@github.com/xHavckedx/todo-list-aws.git"
 
 			git merge develop			
-			git checkout --ours samconfig.toml
 			git checkout --ours .gitignore
 			git checkout --ours Jenkinsfile
 			git checkout --ours Jenkinsfile_agentes
